@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FES DMS — Style Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Brand */
+    --brand-blue:#1F4397; --brand-green:#39A248;
+    /* Metric (stat cards) */
+    --metric-value:#2B3674; --metric-label:rgba(43,54,116,.72); --metric-muted:#A3AED0;
+    /* Text */
+    --text-heading:#101828; --text-strong:#292929;
+    --text-muted:#667085; --text-placeholder:rgba(41,41,41,.37);
+    /* Surface */
+    --surface:#FFFFFF; --input-surface:#F9FAFB; --canvas:#EEF2F9;
+    --divider:#C4C4C4; --border-subtle:#E2E8F0; --input-border:rgba(41,41,41,.37);
+    /* Status */
+    --status-success:#39A248; --status-pending:#F5A623; --status-error:#EF4444; --status-info:#4318FF;
+    /* Type families */
+    --font-bold:'Helvetica',Arial,sans-serif;
+    --font-base:'Inter',sans-serif;
+    --font-metric:'DM Sans',sans-serif;
+    /* Type sizes */
+    --fs-2xl:24px; --fs-xl:20px; --fs-lg:18px; --fs-sm:14px; --fs-xs:12px; --fs-2xs:10px;
+    /* Spacing */
+    --sp-1:6px; --sp-2:8px; --sp-3:12px; --sp-4:16px; --sp-field-gap:20px; --sp-gutter:32px;
+    /* Control sizes */
+    --h-button:44px; --h-input:36px; --h-icon-btn:40px; --h-row:54px;
+    /* Radius */
+    --r-chip:8px; --r-control:12px; --r-container:16px; --r-card:20px; --r-pill:9999px;
+    /* Elevation */
+    --shadow-xs:0 1px .5px rgba(29,41,61,.02);
+    --shadow-card:0 6px 24px rgba(0,0,0,.06);
+    --shadow-float:0 3px 9px rgba(31,67,151,.16);
+    --glass-bg:linear-gradient(90deg,rgba(255,255,255,.82),rgba(255,255,255,.80));
+    --glass-blur:10.5px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    font-family:var(--font-base);color:var(--text-strong);
+    background:linear-gradient(180deg,#EEF2F9 0%,#E7EDF7 100%);
+    background-attachment:fixed;line-height:1.5;-webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1200px;margin:0 auto;padding:0 var(--sp-gutter) 96px}
+
+  /* ---------- Glass header (live component) ---------- */
+  .topbar{position:sticky;top:16px;z-index:50;margin:16px auto 0;max-width:1200px;
+    background:var(--glass-bg);backdrop-filter:blur(var(--glass-blur));-webkit-backdrop-filter:blur(var(--glass-blur));
+    border:1.5px solid #fff;border-radius:var(--r-container);box-shadow:var(--shadow-card);
+    display:flex;align-items:center;justify-content:space-between;padding:18px 32px}
+  .logo{font-family:var(--font-bold);font-weight:700;font-size:24px;letter-spacing:.5px}
+  .logo .v{color:var(--brand-blue)} .logo .i{color:var(--brand-green)}
+  .nav{display:flex;gap:30px;align-items:center}
+  .nav a{font-family:var(--font-bold);font-weight:700;font-size:14px;text-transform:uppercase;
+    text-decoration:none;color:var(--brand-blue);display:flex;gap:6px;align-items:center;letter-spacing:.3px}
+  .nav a.active{color:var(--brand-green)}
+  .topbar-right{display:flex;gap:16px;align-items:center;color:var(--brand-blue)}
+  .topbar-right .ico{width:24px;height:24px;display:grid;place-items:center}
+  .profile{display:flex;gap:8px;align-items:center;font-family:var(--font-bold)}
+  .profile .pn{font-weight:700;font-size:14px;line-height:1.1;color:var(--brand-blue)}
+  .profile .pr{font-weight:300;font-size:10px;color:var(--brand-blue);opacity:.85}
+
+  /* ---------- Doc layout ---------- */
+  .hero{padding:48px 0 12px}
+  .hero h1{font-family:var(--font-bold);font-weight:700;font-size:40px;color:var(--text-heading);letter-spacing:-.5px}
+  .hero p{color:var(--text-muted);font-size:16px;margin-top:8px;max-width:760px}
+  .hero .meta{margin-top:16px;display:flex;gap:8px;flex-wrap:wrap}
+  .tag{font-family:var(--font-bold);font-weight:700;font-size:12px;background:#fff;border:1px solid var(--border-subtle);
+    border-radius:var(--r-pill);padding:5px 12px;color:var(--brand-blue)}
+
+  section{margin-top:48px}
+  h2{font-family:var(--font-bold);font-weight:700;font-size:24px;color:var(--text-heading);
+    padding-bottom:12px;border-bottom:2px solid var(--brand-blue);margin-bottom:24px;display:flex;align-items:center;gap:10px}
+  h2 .n{display:grid;place-items:center;width:30px;height:30px;border-radius:8px;background:var(--brand-blue);color:#fff;font-size:14px}
+  h3{font-family:var(--font-bold);font-weight:700;font-size:18px;color:var(--text-heading);margin:28px 0 14px}
+
+  .card{background:var(--surface);border:1px solid var(--border-subtle);border-radius:var(--r-container);
+    box-shadow:var(--shadow-card);padding:24px}
+  .grid{display:grid;gap:16px}
+  .g2{grid-template-columns:repeat(2,1fr)} .g3{grid-template-columns:repeat(3,1fr)} .g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:880px){.g2,.g3,.g4{grid-template-columns:1fr}}
+
+  /* Swatches */
+  .swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+  .sw{border:1px solid var(--border-subtle);border-radius:12px;overflow:hidden;background:#fff}
+  .sw .chip{height:74px} .sw .meta{padding:10px 12px}
+  .sw .nm{font-family:var(--font-bold);font-weight:700;font-size:13px;color:var(--text-heading)}
+  .sw .hx{font-size:12px;color:var(--text-muted);font-family:ui-monospace,Menlo,monospace;margin-top:2px}
+  .src{display:inline-block;font-size:10px;font-weight:700;border-radius:5px;padding:1px 6px;margin-top:6px}
+  .src.ok{background:#E8F5EA;color:#2E7D34} .src.approx{background:#FFF4E5;color:#B26A00}
+  .ckbg{background:
+      linear-gradient(45deg,#eee 25%,transparent 25%),linear-gradient(-45deg,#eee 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,#eee 75%),linear-gradient(-45deg,transparent 75%,#eee 75%);
+      background-size:16px 16px;background-position:0 0,0 8px,8px -8px,-8px 0}
+
+  /* Tables */
+  table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--border-subtle)}
+  th,td{text-align:left;padding:11px 14px;font-size:13px;border-bottom:1px solid var(--divider)}
+  th{font-family:var(--font-bold);font-weight:700;background:#F7F9FC;color:var(--text-heading);font-size:12px;text-transform:uppercase;letter-spacing:.3px}
+  tr:last-child td{border-bottom:none}
+  td code,.mono{font-family:ui-monospace,Menlo,monospace;font-size:12px;background:#F2F5FA;border-radius:5px;padding:1px 6px}
+  .dot{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:middle;margin-right:6px}
+
+  /* Type specimens */
+  .spec{border:1px solid var(--border-subtle);border-radius:12px;padding:16px 18px;background:#fff;margin-bottom:10px;
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+  .spec .lbl{font-size:12px;color:var(--text-muted);font-family:ui-monospace,Menlo,monospace;white-space:nowrap}
+
+  /* Component previews */
+  .preview{background:
+      linear-gradient(180deg,#F4F7FC,#EEF2F9);
+      border:1px dashed var(--border-subtle);border-radius:12px;padding:24px;display:flex;flex-wrap:wrap;gap:16px;align-items:center}
+  /* Buttons */
+  .btn{height:var(--h-button);border-radius:var(--r-control);padding:0 18px;display:inline-flex;align-items:center;gap:6px;
+    font-family:var(--font-bold);font-weight:700;font-size:14px;border:1px solid transparent;cursor:pointer;box-shadow:var(--shadow-xs)}
+  .btn-primary{background:var(--brand-blue);color:#fff}
+  .btn-green{background:var(--brand-green);color:#fff}
+  .btn-outline{background:#fff;border-color:var(--brand-blue);color:var(--brand-blue)}
+  .btn-icon{width:var(--h-icon-btn);height:var(--h-icon-btn);padding:0;justify-content:center;background:#fff;border-color:var(--border-subtle);color:var(--brand-blue)}
+  /* Inputs */
+  .field{display:flex;flex-direction:column;gap:6px;min-width:240px}
+  .field label{font-family:var(--font-bold);font-weight:400;font-size:12px;color:var(--text-strong)}
+  .field label .req{color:var(--status-error)}
+  .input{height:var(--h-input);background:var(--input-surface);border:1px solid var(--input-border);
+    border-radius:var(--r-control);padding:8px 12px;font-family:var(--font-bold);font-size:14px;color:var(--text-strong);box-shadow:var(--shadow-xs);
+    display:flex;align-items:center;justify-content:space-between;gap:6px}
+  .input.ph{color:var(--text-placeholder)}
+  .input.focus{border-color:var(--brand-blue);background:#fff}
+  .input.error{border-color:var(--status-error);background:#fff}
+  .help{font-size:12px;color:var(--text-muted)}
+  /* Chips & badges */
+  .chip{display:inline-flex;align-items:center;gap:5px;height:32px;padding:6px 12px;border-radius:var(--r-chip);
+    border:1px solid var(--brand-blue);background:#fff;font-family:var(--font-bold);font-weight:700;font-size:14px;color:var(--text-strong)}
+  .chip.sel{background:var(--brand-blue);color:#fff}
+  .badge{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:var(--r-chip);font-family:var(--font-bold);font-weight:700;font-size:13px}
+  .badge.s{background:#E8F5EA;color:#2E7D34} .badge.p{background:#FFF4E5;color:#B26A00}
+  .badge.e{background:#FDEAEA;color:#C62828} .badge.i{background:#ECEAFD;color:#3B2BBF}
+  /* Segmented */
+  .seg{display:inline-flex;background:#fff;border:1px solid var(--border-subtle);border-radius:var(--r-pill);padding:4px;gap:4px}
+  .seg button{border:none;background:transparent;border-radius:var(--r-pill);padding:8px 18px;font-family:var(--font-bold);font-weight:700;font-size:14px;color:var(--text-muted);cursor:pointer}
+  .seg button.on{background:var(--brand-green);color:#fff}
+  /* Stat card */
+  .stat{background:#fff;border-radius:var(--r-card);box-shadow:var(--shadow-card);padding:16px;display:flex;gap:14px;align-items:center;min-width:220px}
+  .stat .ic{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;font-size:22px;flex:0 0 auto;
+    background:radial-gradient(circle at 30% 30%,#EAF0FF,#DCE6FF);color:var(--brand-blue);box-shadow:0 6px 14px rgba(31,67,151,.18)}
+  .stat .lab{font-family:var(--font-metric);font-weight:500;font-size:14px;color:var(--metric-label)}
+  .stat .val{font-family:var(--font-metric);font-weight:700;font-size:24px;line-height:1.15;color:var(--metric-value)}
+  .stat .dl{font-family:var(--font-metric);font-weight:400;font-size:12px;color:var(--metric-muted)}
+  .stat .dl b{color:var(--brand-green);font-weight:400}
+  /* Mini table demo */
+  .demo-table th{background:#F7F9FC} .demo-table td{height:54px;font-family:var(--font-base);font-size:14px;color:var(--text-heading)}
+  .demo-table .ck{width:16px;height:16px;border:1px solid var(--input-border);border-radius:4px;display:inline-block}
+
+  .note{background:#FFF8EC;border:1px solid #F3D9A6;border-radius:12px;padding:14px 18px;font-size:13px;color:#8a5a00;margin-top:16px}
+  .toc{position:fixed;top:120px;right:max(16px,calc((100vw - 1200px)/2 - 180px));width:170px;display:flex;flex-direction:column;gap:4px;z-index:40}
+  .toc a{font-size:12px;color:var(--text-muted);text-decoration:none;padding:5px 10px;border-radius:8px;border-left:2px solid transparent}
+  .toc a:hover{background:#fff;color:var(--brand-blue);border-left-color:var(--brand-green)}
+  @media(max-width:1500px){.toc{display:none}}
+  .swatch-lg{height:90px;border-radius:12px;display:flex;align-items:flex-end;padding:10px 12px;color:#fff;font-family:var(--font-bold);font-weight:700;font-size:13px}
+  .radius-demo{display:flex;gap:16px;flex-wrap:wrap}
+  .radius-demo div{width:90px;height:64px;background:var(--brand-blue);color:#fff;display:grid;place-items:center;font-size:12px;font-family:var(--font-bold);font-weight:700}
+  .elev{width:150px;height:90px;background:#fff;border-radius:12px;display:grid;place-items:center;font-size:12px;color:var(--text-muted);font-family:var(--font-bold)}
+</style>
+</head>
+<body>
+
+<!-- LIVE GLASS HEADER (also a component spec) -->
+<header class="topbar">
+  <div class="logo"><span class="v">V</span><span class="i">I</span></div>
+  <nav class="nav">
+    <a class="active" href="#">▦ Workspace</a>
+    <a href="#">✔ Approvals</a>
+    <a href="#">⚇ Orgs &amp; Users</a>
+    <a href="#">⤓ Downloads</a>
+  </nav>
+  <div class="topbar-right">
+    <span class="ico">🔍</span><span class="ico">🔔</span><span class="ico">?</span>
+    <span class="profile"><span class="ico">👤</span><span><span class="pn">Jay</span><br><span class="pr">FES Admin</span></span> ⌄</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <a href="#brand">Brand</a>
+  <a href="#color">Colour styles</a>
+  <a href="#type">Font &amp; sizes</a>
+  <a href="#spacing">Spacing &amp; radius</a>
+  <a href="#sizes">Field sizes</a>
+  <a href="#components">Components</a>
+  <a href="#patterns">Patterns</a>
+  <a href="#checklist">New module</a>
+</nav>
+
+<div class="wrap">
+
+  <div class="hero">
+    <h1>FES DMS — Style Guide</h1>
+    <p>The reusable design language for the FES DMS product family (VI / Village-Information Data Management System). Use this whenever you add a new product, module, or screen so everything stays visually consistent.</p>
+    <div class="meta">
+      <span class="tag">Figma: FES-DMS</span>
+      <span class="tag">Blue #1F4397 + Green #39A248</span>
+      <span class="tag">Helvetica · Inter · DM Sans</span>
+      <span class="tag">Glass top-nav shell</span>
+    </div>
+  </div>
+
+  <!-- 1. BRAND -->
+  <section id="brand">
+    <h2><span class="n">1</span> Brand foundations</h2>
+    <div class="grid g2">
+      <div class="card">
+        <h3 style="margin-top:0">The two-primary rule</h3>
+        <p style="font-size:14px;color:var(--text-muted)">Blue is the default primary — confirm, submit, brand. Green is the generative / positive primary — Add VI, Add New, Active, Approved. <b>Never</b> use green for destructive or neutral actions.</p>
+        <div style="display:flex;gap:14px;margin-top:18px">
+          <div class="swatch-lg" style="flex:1;background:var(--brand-blue)">Brand Blue · #1F4397</div>
+          <div class="swatch-lg" style="flex:1;background:var(--brand-green)">Brand Green · #39A248</div>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Logo</h3>
+        <p style="font-size:14px;color:var(--text-muted)">Wordmark <b>VI</b> — V in Brand Blue, I in Brand Green, Helvetica Bold. Keep the two-colour split in any lockup.</p>
+        <div style="margin-top:18px;text-align:center;padding:24px;background:var(--canvas);border-radius:12px">
+          <span class="logo" style="font-size:64px"><span class="v">V</span><span class="i">I</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. COLOUR -->
+  <section id="color">
+    <h2><span class="n">2</span> Colour styles</h2>
+    <p style="font-size:14px;color:var(--text-muted);margin-bottom:18px">Every colour in the system. <span class="src ok">✓ Figma</span> = extracted from components/variables · <span class="src approx">≈ match</span> = visually matched, lock when first coded.</p>
+
+    <h3>Brand &amp; text</h3>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#1F4397"></div><div class="meta"><div class="nm">Brand Blue</div><div class="hx">#1F4397</div><span class="src ok">✓</span></div></div>
+      <div class="sw"><div class="chip" style="background:#39A248"></div><div class="meta"><div class="nm">Brand Green</div><div class="hx">#39A248</div><span class="src ok">✓</span></div></div>
+      <div class="sw"><div class="chip" style="background:#101828"></div><div class="meta"><div class="nm">Heading</div><div class="hx">#101828</div><span class="src ok">✓</span></div></div>
+      <div class="sw"><div class="chip" style="background:#292929"></div><div class="meta"><div class="nm">Strong / on-light</div><div class="hx">#292929</div><span class="src ok">✓</span></div></div>
+      <div class="sw"><div class="chip ckbg"><div style="height:100%;background:rgba(41,41,41,.37)"></div></div><div class="meta"><div class="nm">Placeholder / border</div><div class="hx">rgba(41,41,41,.37)</div><span class="src ok">✓</span></div></div>
+      <div class="sw"><div class="chip" style="background:#667085"></div><div class="meta"><div class="nm">Body muted</div><div class="hx">#667085</div><span class="src approx">≈</span></div></div>
+    </div>
+
+    <h3>Dashboard metric palette <span style="font-weight:400;font-size:13px;color:var(--text-muted)">— stat cards only</span></h3>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#2B3674"></div><div class="meta"><div class="nm">Metric value</div><div class="hx">#2B3674</div><span class="src ok">✓</span></div></div>
+      <div class="sw"><div class="chip ckbg"><div style="height:100%;background:rgba(43,54,116,.72)"></div></div><div class="meta"><div class="nm">Metric label</div><div class="hx">rgba(43,54,116,.72)</div><span class="src ok">✓</span></div></div>
+      <div class="sw"><div class="chip" style="background:#A3AED0"></div><div class="meta"><div class="nm">Metric muted</div><div class="hx">#A3AED0</div><span class="src ok">✓</span></div></div>
+    </div>
+
+    <h3>Surfaces, lines &amp; glass</h3>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#FFFFFF;border-bottom:1px solid var(--border-subtle)"></div><div class="meta"><div class="nm">Surface</div><div class="hx">#FFFFFF</div><span class="src ok">✓</span></div></div>
+      <div class="sw"><div class="chip" style="background:#F9FAFB;border-bottom:1px solid var(--border-subtle)"></div><div class="meta"><div class="nm">Input surface</div><div class="hx">#F9FAFB</div><span class="src ok">✓</span></div></div>
+      <div class="sw"><div class="chip" style="background:#EEF2F9"></div><div class="meta"><div class="nm">Canvas</div><div class="hx">#EEF2F9</div><span class="src approx">≈</span></div></div>
+      <div class="sw"><div class="chip" style="background:#C4C4C4"></div><div class="meta"><div class="nm">Divider</div><div class="hx">#C4C4C4</div><span class="src ok">✓</span></div></div>
+      <div class="sw"><div class="chip" style="background:#E2E8F0"></div><div class="meta"><div class="nm">Border subtle</div><div class="hx">#E2E8F0</div><span class="src approx">≈</span></div></div>
+      <div class="sw"><div class="chip" style="background:var(--glass-bg)"></div><div class="meta"><div class="nm">Glass header</div><div class="hx">white 82→80% + blur</div><span class="src ok">✓</span></div></div>
+    </div>
+
+    <h3>Semantic / status <span style="font-weight:400;font-size:13px;color:var(--text-muted)">— always dot/icon + label</span></h3>
+    <div class="swatches">
+      <div class="sw"><div class="chip" style="background:#39A248"></div><div class="meta"><div class="nm">Success / Approved</div><div class="hx">#39A248</div><span class="src ok">✓</span></div></div>
+      <div class="sw"><div class="chip" style="background:#F5A623"></div><div class="meta"><div class="nm">Pending / In-review</div><div class="hx">#F5A623</div><span class="src approx">≈</span></div></div>
+      <div class="sw"><div class="chip" style="background:#EF4444"></div><div class="meta"><div class="nm">Error / Rejected</div><div class="hx">#EF4444</div><span class="src approx">≈</span></div></div>
+      <div class="sw"><div class="chip" style="background:#4318FF"></div><div class="meta"><div class="nm">Info / Request Changes</div><div class="hx">#4318FF</div><span class="src approx">≈</span></div></div>
+    </div>
+  </section>
+
+  <!-- 3. TYPE -->
+  <section id="type">
+    <h2><span class="n">3</span> Font styles &amp; sizes</h2>
+
+    <h3>Three families — fixed roles</h3>
+    <div class="grid g3">
+      <div class="card"><div style="font-family:var(--font-bold);font-weight:700;font-size:32px">Helvetica</div><p style="font-size:13px;color:var(--text-muted);margin-top:8px">Bold UI chrome — nav, buttons, headings, modal titles, field labels, input text, chips, logo, profile.</p></div>
+      <div class="card"><div style="font-family:var(--font-base);font-weight:400;font-size:32px">Inter</div><p style="font-size:13px;color:var(--text-muted);margin-top:8px">Base / body / data — table cells and long-form body text.</p></div>
+      <div class="card"><div style="font-family:var(--font-metric);font-weight:700;font-size:32px">DM Sans</div><p style="font-size:13px;color:var(--text-muted);margin-top:8px">Dashboard metrics only — stat card value, label &amp; delta.</p></div>
+    </div>
+
+    <h3>Size scale</h3>
+    <div class="spec"><span style="font-family:var(--font-bold);font-weight:700;font-size:24px;color:var(--text-heading)">Page title &amp; stat value</span><span class="lbl">text-2xl · 24 / 24–28</span></div>
+    <div class="spec"><span style="font-family:var(--font-bold);font-weight:700;font-size:20px;color:var(--text-strong)">Modal / dialog title</span><span class="lbl">xl · 20 / 28</span></div>
+    <div class="spec"><span style="font-family:var(--font-bold);font-weight:700;font-size:18px;color:var(--text-heading)">Section &amp; card title</span><span class="lbl">text-lg · 18 / 24</span></div>
+    <div class="spec"><span style="font-family:var(--font-bold);font-weight:700;font-size:14px;color:var(--text-strong)">Default UI size — body, buttons, nav, inputs, table</span><span class="lbl">text-sm · 14 / 20</span></div>
+    <div class="spec"><span style="font-family:var(--font-bold);font-weight:400;font-size:12px;color:var(--text-strong)">Field label, helper text, caption, stat delta</span><span class="lbl">caption · 12 / 12–16</span></div>
+    <div class="spec"><span style="font-family:var(--font-bold);font-weight:300;font-size:10px;color:var(--text-strong)">Profile role micro text</span><span class="lbl">micro · 10 / 15</span></div>
+
+    <h3>Element-by-element type map</h3>
+    <table>
+      <thead><tr><th>Element</th><th>Family</th><th>Weight</th><th>Size / LH</th><th>Colour</th><th>Case</th></tr></thead>
+      <tbody>
+        <tr><td>Logo VI</td><td>Helvetica</td><td>Bold</td><td>24 / 24</td><td>Blue + Green</td><td>—</td></tr>
+        <tr><td>Nav item</td><td>Helvetica</td><td>Bold</td><td>14 / 21</td><td>Blue · <b>Green active</b></td><td>UPPERCASE</td></tr>
+        <tr><td>Profile name</td><td>Helvetica</td><td>Bold</td><td>14 / 18</td><td><code>#1F4397</code></td><td>—</td></tr>
+        <tr><td>Profile role</td><td>Helvetica</td><td>Light</td><td>10 / 15</td><td><code>#1F4397</code></td><td>—</td></tr>
+        <tr><td>Page title</td><td>Helvetica</td><td>Bold</td><td>24 / 24</td><td><code>#101828</code></td><td>Title</td></tr>
+        <tr><td>Section / card title</td><td>Helvetica</td><td>Bold</td><td>18 / 24</td><td><code>#101828</code></td><td>Title</td></tr>
+        <tr><td>Modal title</td><td>Helvetica</td><td>Bold</td><td>20 / 28</td><td><code>#292929</code></td><td>Title</td></tr>
+        <tr><td>Modal subtitle</td><td>Helvetica</td><td>Regular</td><td>14 / 22</td><td><code>#292929</code></td><td>Sentence</td></tr>
+        <tr><td>Button label</td><td>Helvetica</td><td>Bold</td><td>14 / 20</td><td>White / Blue</td><td>—</td></tr>
+        <tr><td>Filter / status chip</td><td>Helvetica</td><td>Bold</td><td>14 / 20</td><td><code>#292929</code></td><td>—</td></tr>
+        <tr><td>Field label</td><td>Helvetica</td><td>Regular</td><td>12 / 12</td><td><code>#292929</code></td><td>—</td></tr>
+        <tr><td>Input text / value</td><td>Helvetica</td><td>Regular</td><td>14 / 20</td><td><code>#292929</code></td><td>—</td></tr>
+        <tr><td>Input placeholder</td><td>Helvetica</td><td>Regular</td><td>14 / 20</td><td><code>rgba(41,41,41,.37)</code></td><td>—</td></tr>
+        <tr><td>Field helper text</td><td>Helvetica</td><td>Regular</td><td>12 / 12</td><td><code>#292929</code></td><td>Sentence</td></tr>
+        <tr><td>Table cell / body</td><td>Inter</td><td>Regular</td><td>14 / 20</td><td><code>#101828</code></td><td>—</td></tr>
+        <tr><td>Stat label</td><td>DM Sans</td><td>Medium</td><td>14 / 18</td><td><code>rgba(43,54,116,.72)</code></td><td>—</td></tr>
+        <tr><td>Stat value</td><td>DM Sans</td><td>Bold</td><td>24 / 28</td><td><code>#2B3674</code></td><td>—</td></tr>
+        <tr><td>Stat delta</td><td>DM Sans</td><td>Regular</td><td>12 / 16</td><td>Green / <code>#A3AED0</code></td><td>—</td></tr>
+      </tbody>
+    </table>
+    <div class="note">If Helvetica isn't licensed for the web build, substitute a close neutral grotesque (Arial, Inter Tight, Helvetica Neue) and keep weights identical.</div>
+  </section>
+
+  <!-- 4. SPACING & RADIUS -->
+  <section id="spacing">
+    <h2><span class="n">4</span> Spacing, radius &amp; elevation</h2>
+    <div class="grid g2">
+      <div class="card">
+        <h3 style="margin-top:0">Spacing — 4px base</h3>
+        <table>
+          <thead><tr><th>Token</th><th>px</th><th>Use</th></tr></thead>
+          <tbody>
+            <tr><td><code>spacing/1.5</code></td><td>6</td><td>label↔input, icon gaps</td></tr>
+            <tr><td><code>spacing/2</code></td><td>8</td><td>input v-padding</td></tr>
+            <tr><td><code>spacing/3</code></td><td>12</td><td>button padding, input h-pad</td></tr>
+            <tr><td><code>spacing/4</code></td><td>16</td><td>card padding, gaps</td></tr>
+            <tr><td>field gap</td><td>20</td><td>between form fields</td></tr>
+            <tr><td>nav gap</td><td>30</td><td>between nav items</td></tr>
+            <tr><td>gutter</td><td>32</td><td>page L/R + header padding</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Radius</h3>
+        <div class="radius-demo">
+          <div style="border-radius:8px">8 · chip</div>
+          <div style="border-radius:12px">12 · control</div>
+          <div style="border-radius:16px">16 · container</div>
+          <div style="border-radius:20px">20 · card</div>
+          <div style="border-radius:9999px">full · pill</div>
+        </div>
+        <h3>Elevation</h3>
+        <div style="display:flex;gap:18px;flex-wrap:wrap;padding:8px 0 4px">
+          <div class="elev" style="box-shadow:var(--shadow-xs)">shadow-xs</div>
+          <div class="elev" style="box-shadow:var(--shadow-card)">shadow-card</div>
+          <div class="elev" style="box-shadow:var(--shadow-float)">shadow-float</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. FIELD SIZES -->
+  <section id="sizes">
+    <h2><span class="n">5</span> Field &amp; control sizes</h2>
+    <table>
+      <thead><tr><th>Control</th><th>Height</th><th>Padding (v · h)</th><th>Radius</th><th>Notes</th></tr></thead>
+      <tbody>
+        <tr><td>Button (all variants)</td><td><b>44px</b></td><td>12 · 12</td><td>12</td><td>gap 6; width by label, can be full-width</td></tr>
+        <tr><td>Icon-only button</td><td><b>40 × 40</b></td><td>—</td><td>12</td><td>glyph 16–24px</td></tr>
+        <tr><td>Text input</td><td><b>36px</b></td><td>8 · 12</td><td>12</td><td>bg #F9FAFB, 1px border, shadow-xs</td></tr>
+        <tr><td>Select / dropdown</td><td><b>36px</b></td><td>8 · 12</td><td>12</td><td>+ 16px chevron</td></tr>
+        <tr><td>Search bar</td><td><b>36px</b></td><td>8 · 12</td><td>12</td><td>+ leading magnifier, default w 240</td></tr>
+        <tr><td>Filter / status chip</td><td>~32px</td><td>6 · 12</td><td>8</td><td>1px #1F4397 border</td></tr>
+        <tr><td>Table row</td><td><b>54px</b></td><td>cell ~16</td><td>—</td><td>hairline dividers</td></tr>
+        <tr><td>Stat card</td><td>auto</td><td>16</td><td>20</td><td>56px circular icon</td></tr>
+        <tr><td>Modal / dialog</td><td>auto</td><td>~24</td><td>16</td><td>shadow-float</td></tr>
+        <tr><td>App header</td><td>~60px</td><td>18 · 32</td><td>16</td><td>glass, sticky</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Input states <span style="font-weight:400;font-size:13px;color:var(--text-muted)">— all keep 36px height &amp; 12 radius</span></h3>
+    <div class="preview">
+      <div class="field"><label>Default / empty</label><div class="input ph">Enter Full Name <span>·</span></div></div>
+      <div class="field"><label>Filled</label><div class="input">Green Earth Foundation <span>·</span></div></div>
+      <div class="field"><label>Focus</label><div class="input focus">Typing… <span>|</span></div></div>
+      <div class="field"><label>Error</label><div class="input error">bad@ <span>!</span></div><span class="help" style="color:var(--status-error)">Enter a valid email.</span></div>
+      <div class="field"><label>Select</label><div class="input">Select Role <span>⌄</span></div></div>
+    </div>
+  </section>
+
+  <!-- 6. COMPONENTS -->
+  <section id="components">
+    <h2><span class="n">6</span> Components</h2>
+
+    <h3>Buttons <span style="font-weight:400;font-size:13px;color:var(--text-muted)">— 44px · radius 12 · Helvetica Bold 14</span></h3>
+    <div class="preview">
+      <button class="btn btn-primary">Update Organization</button>
+      <button class="btn btn-outline">Cancel</button>
+      <button class="btn btn-green">+ Add New VI</button>
+      <button class="btn btn-primary">⤓ Export</button>
+      <button class="btn btn-icon">✎</button>
+      <button class="btn btn-icon">🗑</button>
+    </div>
+
+    <h3>Segmented toggle &amp; filter chips</h3>
+    <div class="preview">
+      <div class="seg"><button class="on">Map View</button><button>Table View</button></div>
+      <div class="seg"><button class="on">Organizations</button><button>Users</button></div>
+      <span class="chip sel">All</span>
+      <span class="chip">Pending</span>
+      <span class="chip">Request Change</span>
+      <span class="chip">Rejected</span>
+    </div>
+
+    <h3>Status badges</h3>
+    <div class="preview">
+      <span class="badge s"><span class="dot" style="background:var(--status-success)"></span>Approved</span>
+      <span class="badge p"><span class="dot" style="background:var(--status-pending)"></span>Pending</span>
+      <span class="badge e"><span class="dot" style="background:var(--status-error)"></span>Rejected</span>
+      <span class="badge i"><span class="dot" style="background:var(--status-info)"></span>Request Changes</span>
+    </div>
+
+    <h3>Stat / metric cards <span style="font-weight:400;font-size:13px;color:var(--text-muted)">— DM Sans, row of 4</span></h3>
+    <div class="preview" style="display:grid;grid-template-columns:repeat(4,1fr)">
+      <div class="stat"><div class="ic">📄</div><div><div class="lab">Total VIs</div><div class="val">1,247</div><div class="dl"><b>+12%</b> from last month</div></div></div>
+      <div class="stat"><div class="ic">🏢</div><div><div class="lab">Active Orgs</div><div class="val">34</div><div class="dl"><b>+3%</b> from last month</div></div></div>
+      <div class="stat"><div class="ic">✔</div><div><div class="lab">Approved VIs</div><div class="val">892</div><div class="dl"><b>+8%</b> from last month</div></div></div>
+      <div class="stat"><div class="ic">📍</div><div><div class="lab">States Covered</div><div class="val">34</div><div class="dl">no change</div></div></div>
+    </div>
+
+    <h3>Form fields &amp; modal footer</h3>
+    <div class="preview" style="display:block">
+      <div style="font-family:var(--font-bold);font-weight:700;font-size:20px;color:var(--text-strong)">Add New Organization</div>
+      <div style="font-size:14px;color:var(--text-strong);margin:2px 0 18px">Enter organization details</div>
+      <div style="display:flex;flex-direction:column;gap:20px;max-width:560px">
+        <div class="field" style="min-width:0"><label>Organization Name</label><div class="input ph">Enter Organization Name</div></div>
+        <div style="display:flex;gap:16px">
+          <div class="field" style="flex:1;min-width:0"><label>State <span class="req">*</span></label><div class="input ph">Select State <span>⌄</span></div></div>
+          <div class="field" style="flex:1;min-width:0"><label>District <span class="req">*</span></label><div class="input ph">Select District <span>⌄</span></div></div>
+        </div>
+        <div class="field" style="min-width:0"><label>Contact Email</label><div class="input">contact@greenearth.org</div></div>
+        <div style="display:flex;gap:12px;justify-content:flex-end;margin-top:4px">
+          <button class="btn btn-outline">Cancel</button>
+          <button class="btn btn-primary">Update Organization</button>
+        </div>
+      </div>
+    </div>
+
+    <h3>Data table</h3>
+    <div class="preview" style="display:block;padding:0;border:none">
+      <table class="demo-table">
+        <thead><tr><th><span class="demo-table-ck ck"></span></th><th>VI ID</th><th>VI Name</th><th>State</th><th>District</th><th>Land Type</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr><td><span class="ck"></span></td><td>V101</td><td>Gram Sabha committee</td><td>Gujarat</td><td>Panch Mahals</td><td>Forest Land</td><td><span class="badge s">Approved</span></td><td>⋯</td></tr>
+          <tr><td><span class="ck"></span></td><td>V102</td><td>Bhil vanya committee</td><td>Gujarat</td><td>Panch Mahals</td><td>Forest Land</td><td><span class="badge p">Pending</span></td><td>⋯</td></tr>
+          <tr><td><span class="ck"></span></td><td>V103</td><td>Dhamliya vikas samiti</td><td>Gujarat</td><td>Dahod</td><td>Forest Land</td><td><span class="badge e">Rejected</span></td><td>⋯</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Component inventory</h3>
+    <p style="font-size:13px;color:var(--text-muted)">Header · Stat card · Button (primary / secondary / green / icon) · Segmented toggle · Filter chip · Status badge · Data table + pagination · Search · Input · Select · Modal · Entity card · Slide-over panel · Map overlay · Tabs · Onboarding step · Offline / Sync-queue state · Empty state.</p>
+  </section>
+
+  <!-- 7. PATTERNS -->
+  <section id="patterns">
+    <h2><span class="n">7</span> Layout &amp; patterns</h2>
+    <div class="grid g2">
+      <div class="card">
+        <h3 style="margin-top:0">Page template</h3>
+        <pre style="font-size:12px;line-height:1.6;color:var(--text-strong);font-family:ui-monospace,Menlo,monospace;white-space:pre-wrap">▓ Floating glass header (sticky)
+─────────────────────────────
+Page Title        [Map|Table] [⛶]
+[Stat][Stat][Stat][Stat]
+Toolbar: [view] [+Primary] [Filters][Export]
+┌ Content: Table ⇄ Map ⇄ Card grid ┐
+└──────────────────────────────────┘
+Showing 1–20 of 300   ‹ 1 2 3 … ›</pre>
+        <p style="font-size:13px;color:var(--text-muted);margin-top:8px">1440px reference · content ≈ 1376 · 32px gutters · canvas background.</p>
+      </div>
+      <div class="card">
+        <h3 style="margin-top:0">Key patterns</h3>
+        <ul style="font-size:13px;color:var(--text-strong);padding-left:18px;line-height:1.9">
+          <li><b>Table ⇄ Map duality</b> on every geo module + fullscreen.</li>
+          <li><b>Detail without navigation</b> — right slide-over panel.</li>
+          <li><b>Approvals:</b> Pending → Approved / Rejected / Request Changes.</li>
+          <li><b>Field-User resilience:</b> Offline + Sync-queue states.</li>
+          <li><b>Filter chip row</b> above lists; selected chip filled.</li>
+          <li><b>Microcopy:</b> nav UPPERCASE; titles Title Case.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 8. CHECKLIST -->
+  <section id="checklist">
+    <h2><span class="n">8</span> Adding a new product / module</h2>
+    <div class="card">
+      <ol style="font-size:14px;line-height:1.9;padding-left:20px">
+        <li><b>Shell</b> — reuse the glass header; add an UPPERCASE nav item with icon (green when active). Respect role scoping (Super Admin / Org Admin / Field User).</li>
+        <li><b>Page template</b> — title row → optional 4 stat cards → toolbar → content → pagination. 32px gutters, canvas background.</li>
+        <li><b>Tokens only</b> — pull every colour/size from §2–5. No new hexes, radii, or fonts. Blue = confirm, Green = create/positive.</li>
+        <li><b>Type</b> — Helvetica for chrome/buttons/labels/inputs, Inter for body/tables, DM Sans only for stat cards. Default 14px.</li>
+        <li><b>Components</b> — compose from the inventory. New parts match 12/16/20 radii, the three shadows, and 6/8/12/16 spacing.</li>
+        <li><b>Data views</b> — geo records get Table + Map + Fullscreen, status filter chips, row checkboxes, slide-over detail.</li>
+        <li><b>Forms</b> — 36px fields, 12 radius, label 12px + asterisk; modal footer Cancel (outline) + Primary (filled).</li>
+        <li><b>States</b> — design empty, loading, error, <b>offline</b>, and <b>sync-queue</b> (Field-User contexts).</li>
+        <li><b>Status</b> — reuse the badge + semantic colours; always pair colour with a label.</li>
+        <li><b>A11y</b> — 14px min body, never colour-only signals, visible focus, AA contrast.</li>
+      </ol>
+    </div>
+    <div class="note">Values marked <span class="src approx" style="margin:0 2px">≈</span> (some grays, status hexes, focus/error states) are visually matched — confirm against Figma before shipping, then promote them to <span class="src ok" style="margin:0 2px">✓</span>. Full token reference and module IA are in <b>FES-DMS-Design-Guidelines.md</b>.</div>
+  </section>
+
+</div>
+</body>
+</html>
