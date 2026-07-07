@@ -1671,6 +1671,7 @@ function go(id){
   window.scrollTo(0,0);
   try{ if(id==='login') localStorage.removeItem('fes_screen'); else localStorage.setItem('fes_screen',id); }catch(e){}
   if(SKEL_PAGES[id])pageSkeleton(id,800);
+  else if(id==='dashboard'){var au='';try{au=localStorage.getItem('fes_auth')||'';}catch(e){} if(au)showDashLoading(1100);}
 }
 /* shared field-user helpers (Submitted/Pending badge + Edit/Fill Form CTA) */
 function isFieldUser(){try{return localStorage.getItem('fes_role')==='Field User';}catch(e){return false;}}
