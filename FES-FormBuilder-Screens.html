@@ -519,6 +519,12 @@ td .ds{font-size:12px;color:var(--text-muted);margin-top:2px}
 .sk-statcard{display:flex;align-items:center;gap:14px;padding:20px}
 .sk-formhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
 .sk-gcard{padding:18px}
+/* generic page skeleton (all modules) */
+.pageskel{display:none}
+.page.gload>*:not(.pageskel){display:none!important}
+.page.gload>.pageskel{display:block}
+.skrow{display:flex;align-items:center;gap:20px;padding:17px 20px;border-bottom:1px solid var(--border-subtle)}
+.skrow:last-child{border-bottom:none}
 /* modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(16,24,40,.5);display:none;align-items:center;justify-content:center;z-index:200;padding:40px 20px;overflow:auto}
 .modal-overlay.show{display:flex}
@@ -1644,11 +1650,27 @@ td .ds{font-size:12px;color:var(--text-muted);margin-top:2px}
 <script src="https://unpkg.com/lucide@latest"></script>
 <script>
 /* one screen at a time, full viewport */
+var SKEL_PAGES={formlist:1,programs:1,templates:1,submissions:1};
+function pageSkelHTML(){
+  var rows='';for(var i=0;i<8;i++){rows+='<div class="skrow"><div class="sk sk-line" style="flex:0 0 34px;height:12px"></div><div class="sk sk-line" style="flex:2.4;height:12px"></div><div class="sk sk-line" style="flex:1.6;height:12px"></div><div class="sk sk-line" style="flex:1;height:12px"></div><div class="sk sk-line" style="flex:0 0 78px;height:22px;border-radius:11px"></div></div>';}
+  return '<div class="sk-loadbar"><span class="spinner"></span> Loading…</div>'+
+    '<div class="sk-formhead"><div class="sk sk-line" style="width:180px;height:20px"></div><div class="flex g8"><div class="sk sk-line" style="width:210px;height:40px;border-radius:10px"></div><div class="sk sk-line" style="width:120px;height:40px;border-radius:10px"></div></div></div>'+
+    '<div class="card" style="padding:0;overflow:hidden">'+rows+'</div>';
+}
+function pageSkeleton(id,ms){
+  var page=document.querySelector('#'+id+' .page'); if(!page)return;
+  var sk=page.querySelector(':scope > .pageskel');
+  if(!sk){sk=document.createElement('div');sk.className='pageskel';sk.innerHTML=pageSkelHTML();page.insertBefore(sk,page.firstChild);if(window.lucide)lucide.createIcons();}
+  page.classList.add('gload');
+  clearTimeout(page._skT);
+  page._skT=setTimeout(function(){page.classList.remove('gload');if(window.lucide)lucide.createIcons();},ms||800);
+}
 function go(id){
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('show');});
   var el=document.getElementById(id); if(el)el.classList.add('show');
   window.scrollTo(0,0);
   try{ if(id==='login') localStorage.removeItem('fes_screen'); else localStorage.setItem('fes_screen',id); }catch(e){}
+  if(SKEL_PAGES[id])pageSkeleton(id,800);
 }
 /* shared field-user helpers (Submitted/Pending badge + Edit/Fill Form CTA) */
 function isFieldUser(){try{return localStorage.getItem('fes_role')==='Field User';}catch(e){return false;}}
