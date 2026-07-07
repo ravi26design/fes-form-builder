@@ -505,6 +505,20 @@ td .ds{font-size:12px;color:var(--text-muted);margin-top:2px}
 .ddi{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:9px;font-family:var(--font-bold);font-weight:700;font-size:14px;color:var(--text-strong);cursor:pointer;white-space:nowrap}
 .ddi:hover{background:#F2F6FF}
 .ddi svg{width:16px;height:16px;color:var(--text-muted)}
+/* skeleton loading */
+@keyframes skshimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes skspin{to{transform:rotate(360deg)}}
+.sk{background:linear-gradient(90deg,#edf1f6 25%,#e0e6ee 37%,#edf1f6 63%);background-size:200% 100%;animation:skshimmer 1.35s infinite linear;border-radius:8px}
+.sk-line{height:12px;border-radius:6px}
+.sk-circle{border-radius:50%}
+#dashSkeleton{display:none}
+#dashboard .page.loading .stats,#dashboard .page.loading #dashFormsToolbar,#dashboard .page.loading #formsList,#dashboard .page.loading #formsGrid,#dashboard .page.loading #gridPager,#dashboard .page.loading #formsEmpty{display:none!important}
+#dashboard .page.loading #dashSkeleton{display:block}
+.sk-loadbar{display:flex;align-items:center;justify-content:center;gap:10px;color:var(--text-muted);font-family:var(--font-bold);font-weight:700;font-size:13px;margin:2px 0 20px}
+.spinner{width:18px;height:18px;border:2.5px solid #dbe2ec;border-top-color:var(--brand-blue);border-radius:50%;animation:skspin .7s linear infinite;flex:0 0 auto}
+.sk-statcard{display:flex;align-items:center;gap:14px;padding:20px}
+.sk-formhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.sk-gcard{padding:18px}
 /* modal */
 .modal-overlay{position:fixed;inset:0;background:rgba(16,24,40,.5);display:none;align-items:center;justify-content:center;z-index:200;padding:40px 20px;overflow:auto}
 .modal-overlay.show{display:flex}
@@ -683,6 +697,18 @@ td .ds{font-size:12px;color:var(--text-muted);margin-top:2px}
       </div>
     </div>
 
+    <div id="dashSkeleton">
+      <div class="sk-loadbar"><span class="spinner"></span> Loading your dashboard…</div>
+      <div class="stats" style="grid-template-columns:repeat(4,1fr);margin-bottom:22px">
+        <div class="card sk-statcard"><div class="sk sk-circle" style="width:52px;height:52px;flex:0 0 auto"></div><div style="flex:1"><div class="sk sk-line" style="width:60%;margin-bottom:10px"></div><div class="sk sk-line" style="width:40%;height:18px;margin-bottom:10px"></div><div class="sk sk-line" style="width:75%;height:9px"></div></div></div>
+        <div class="card sk-statcard"><div class="sk sk-circle" style="width:52px;height:52px;flex:0 0 auto"></div><div style="flex:1"><div class="sk sk-line" style="width:60%;margin-bottom:10px"></div><div class="sk sk-line" style="width:40%;height:18px;margin-bottom:10px"></div><div class="sk sk-line" style="width:75%;height:9px"></div></div></div>
+        <div class="card sk-statcard"><div class="sk sk-circle" style="width:52px;height:52px;flex:0 0 auto"></div><div style="flex:1"><div class="sk sk-line" style="width:60%;margin-bottom:10px"></div><div class="sk sk-line" style="width:40%;height:18px;margin-bottom:10px"></div><div class="sk sk-line" style="width:75%;height:9px"></div></div></div>
+        <div class="card sk-statcard"><div class="sk sk-circle" style="width:52px;height:52px;flex:0 0 auto"></div><div style="flex:1"><div class="sk sk-line" style="width:60%;margin-bottom:10px"></div><div class="sk sk-line" style="width:40%;height:18px;margin-bottom:10px"></div><div class="sk sk-line" style="width:75%;height:9px"></div></div></div>
+      </div>
+      <div class="sk-formhead"><div class="sk sk-line" style="width:130px;height:18px"></div><div class="flex g8"><div class="sk sk-line" style="width:200px;height:38px;border-radius:10px"></div><div class="sk sk-line" style="width:120px;height:38px;border-radius:10px"></div></div></div>
+      <div class="fgrid" id="dashSkelGrid"></div>
+    </div>
+
     <div class="stats" style="grid-template-columns:repeat(4,1fr);margin-bottom:22px">
       <div class="stat"><div class="ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M8 13h8M8 17h6"/></svg></div><div><div class="lab">Total Forms</div><div class="val">50</div><div class="dl"><b>+12%</b> from last month</div></div></div>
       <div class="stat"><div class="ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M17 11a2.5 2.5 0 1 0 0-5"/><path d="M3 20c0-3.3 2.7-5 6-5s6 1.7 6 5"/><path d="M17 15c2.5.3 4 1.9 4 5"/></svg></div><div><div class="lab">Total Responses</div><div class="val">5,580</div><div class="dl"><b>+156</b> this week</div></div></div>
@@ -690,7 +716,7 @@ td .ds{font-size:12px;color:var(--text-muted);margin-top:2px}
       <div class="stat"><div class="ic"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg></div><div><div class="lab">Avg Response Time</div><div class="val">4.2m</div><div class="dl"><b>-0.3m</b> vs last month</div></div></div>
     </div>
 
-    <div class="flex between ac wrap g12" style="margin-bottom:18px">
+    <div id="dashFormsToolbar" class="flex between ac wrap g12" style="margin-bottom:18px">
       <div class="section-title">Your Forms</div>
       <div class="flex ac g8">
         <div class="input formsearch" id="formSearch" style="width:230px;height:42px"><span class="lead"><i data-lucide="search"></i></span><input class="ph" placeholder="Search forms..."><div class="searchsug" id="searchSuggest"></div></div>
@@ -1644,7 +1670,15 @@ function applyRole(){var role='';try{role=localStorage.getItem('fes_role')||'';}
   if(window.flRerender)window.flRerender();
   if(window.dashFormsRender){window.dashFormsRender(); if(typeof applyForms==='function')applyForms();}
 }
-function doLogin(){ var r=document.getElementById('roleSelName'); var role=r?r.textContent.trim():''; try{localStorage.setItem('fes_auth','1');localStorage.setItem('fes_screen','dashboard');if(role)localStorage.setItem('fes_role',role);}catch(e){} applyRole(); go('dashboard'); }
+function showDashLoading(ms){
+  var page=document.querySelector('#dashboard .page'); if(!page)return;
+  var grid=document.getElementById('dashSkelGrid');
+  if(grid && !grid.dataset.built){var c='';for(var i=0;i<6;i++){c+='<div class="card sk-gcard"><div class="flex ac g8" style="margin-bottom:12px"><div class="sk sk-circle" style="width:16px;height:16px;flex:0 0 auto"></div><div class="sk sk-line" style="width:55%;height:14px"></div></div><div class="sk sk-line" style="width:88%;height:11px;margin-bottom:9px"></div><div class="sk sk-line" style="width:68%;height:10px"></div></div>';}grid.innerHTML=c;grid.dataset.built='1';}
+  page.classList.add('loading');
+  clearTimeout(window._dashLoadT);
+  window._dashLoadT=setTimeout(function(){page.classList.remove('loading');if(window.lucide)lucide.createIcons();},ms||1400);
+}
+function doLogin(){ var r=document.getElementById('roleSelName'); var role=r?r.textContent.trim():''; try{localStorage.setItem('fes_auth','1');localStorage.setItem('fes_screen','dashboard');if(role)localStorage.setItem('fes_role',role);}catch(e){} applyRole(); go('dashboard'); showDashLoading(1400); }
 function togglePw(btn){var inp=btn.closest('.input').querySelector('input');if(!inp)return;var show=inp.type==='password';inp.type=show?'text':'password';btn.innerHTML='<i data-lucide="'+(show?'eye':'eye-off')+'"></i>';if(window.lucide)lucide.createIcons();}
 function doLogout(){ try{localStorage.removeItem('fes_auth');localStorage.removeItem('fes_screen');}catch(e){} go('login'); }
 
