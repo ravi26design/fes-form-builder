@@ -2140,7 +2140,7 @@ function applyOptionSource(v){
 function onSourceChange(v){var c=selField(); if(c)c.dataset.osource=v; applyOptionSource(v);}
 function addApiParam(){var wrap=document.getElementById('fApiParams'); if(!wrap)return;
   var row=document.createElement('div'); row.className='flex ac g8';
-  row.innerHTML='<div class="input" style="flex:1"><input class="ph" placeholder="Key" style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:inherit"></div><div class="input" style="flex:1"><input class="ph" placeholder="Value" style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:inherit"></div><span class="iconpill" onclick="this.parentNode.remove()" style="color:var(--status-error);flex:0 0 auto"><i data-lucide="trash-2"></i></span>';
+  row.innerHTML='<div class="input" style="flex:1"><input class="ph" placeholder="Parameter name" style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:inherit"></div><span class="iconpill" onclick="this.parentNode.remove()" style="flex:0 0 auto"><i data-lucide="trash-2"></i></span>';
   wrap.appendChild(row); if(window.lucide)lucide.createIcons();
 }
 function toggleAdvLoc(el){var a=document.getElementById('fLocAdv'); if(!a)return; var willOpen=(!a.style.display||a.style.display==='none'); a.style.display=willOpen?'':'none'; var ic=el.querySelector('svg,i'); if(ic){ic.style.transition='transform .15s';ic.style.transform=willOpen?'rotate(90deg)':'';}}
