@@ -954,9 +954,11 @@ td .ds{font-size:12px;color:var(--text-muted);margin-top:2px}
               <label class="flex ac g8" onclick="toggleCk(this)" style="font-size:14px;cursor:pointer"><span class="ck"></span> Village</label>
             </div>
             <div onclick="toggleAdvLoc(this)" style="border-top:1px solid var(--border-subtle);margin-top:15px;padding-top:15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer"><span style="font-family:var(--font-bold);font-weight:700;font-size:15px;color:var(--text-heading)">Advanced Settings</span><i data-lucide="chevron-right"></i></div>
-            <div id="fLocAdv" style="display:none;margin-top:12px">
-              <label class="flex g8" onclick="toggleCk(this)" style="font-size:13px;cursor:pointer;align-items:flex-start"><span class="ck"></span><span><b style="font-family:var(--font-bold);font-weight:700">Cascading selection</b><div class="muted">Filter each level by the parent selection</div></span></label>
-              <label class="flex g8" onclick="toggleCk(this)" style="font-size:13px;cursor:pointer;align-items:flex-start;margin-top:12px"><span class="ck"></span><span><b style="font-family:var(--font-bold);font-weight:700">Prefill from user location</b><div class="muted">Auto-select based on the field user's assigned area</div></span></label>
+            <div id="fLocAdv" style="display:none;margin-top:14px">
+              <div class="field"><label>API URL</label><div class="input"><input class="ph" placeholder="https://api.example.com/locations" style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:inherit"></div></div>
+              <div class="field" style="margin-top:14px"><label>Method</label><div class="input"><select style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:var(--text-strong)"><option>GET</option><option>POST</option><option>PUT</option></select></div></div>
+              <div class="field" style="margin-top:14px"><label>Parameters</label><div id="fLocParams" class="gridcols" style="gap:8px"></div><button class="btn btn-ghost btn-sm" onclick="addApiParam('fLocParams')" style="border-style:dashed;justify-content:center;width:100%;margin-top:4px"><i data-lucide="plus"></i> Add Parameter</button></div>
+              <div class="field" style="margin-top:14px"><label>Execution</label><div class="input"><select style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:var(--text-strong)"><option>Server</option><option>Client</option></select></div></div>
             </div>
           </div>
           <div class="field" id="fOptions" style="display:none;border-top:1px solid var(--border-subtle);padding-top:14px">
@@ -2138,7 +2140,7 @@ function applyOptionSource(v){
   if(window.lucide)lucide.createIcons();
 }
 function onSourceChange(v){var c=selField(); if(c)c.dataset.osource=v; applyOptionSource(v);}
-function addApiParam(){var wrap=document.getElementById('fApiParams'); if(!wrap)return;
+function addApiParam(wrapId){var wrap=document.getElementById(wrapId||'fApiParams'); if(!wrap)return;
   var row=document.createElement('div'); row.className='flex ac g8';
   row.innerHTML='<div class="input" style="flex:1"><input class="ph" placeholder="Parameter name" style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:inherit"></div><span class="iconpill" onclick="this.parentNode.remove()" style="flex:0 0 auto"><i data-lucide="trash-2"></i></span>';
   wrap.appendChild(row); if(window.lucide)lucide.createIcons();
