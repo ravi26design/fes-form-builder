@@ -957,7 +957,7 @@ td .ds{font-size:12px;color:var(--text-muted);margin-top:2px}
             <div id="fLocAdv" style="display:none;margin-top:14px">
               <div class="field"><label>API URL</label><div class="input"><input class="ph" placeholder="https://api.example.com/locations" style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:inherit"></div></div>
               <div class="field" style="margin-top:14px"><label>Method</label><div class="input"><select style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:var(--text-strong)"><option>GET</option><option>POST</option><option>PUT</option></select></div></div>
-              <div class="field" style="margin-top:14px"><label>Parameters</label><div id="fLocParams" class="gridcols" style="gap:8px"></div><button class="btn btn-ghost btn-sm" onclick="addApiParam('fLocParams')" style="border-style:dashed;justify-content:center;width:100%;margin-top:4px"><i data-lucide="plus"></i> Add Parameter</button></div>
+              <div class="field" style="margin-top:14px"><label>Parameters</label><div id="fLocParams" class="gridcols" style="gap:8px"></div><button class="btn btn-ghost btn-sm" onclick="addLocParam()" style="border-style:dashed;justify-content:center;width:100%;margin-top:4px"><i data-lucide="plus"></i> Add Parameter</button></div>
               <div class="field" style="margin-top:14px"><label>Execution</label><div class="input"><select style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:var(--text-strong)"><option>Server</option><option>Client</option></select></div></div>
             </div>
           </div>
@@ -2140,6 +2140,14 @@ function applyOptionSource(v){
   if(window.lucide)lucide.createIcons();
 }
 function onSourceChange(v){var c=selField(); if(c)c.dataset.osource=v; applyOptionSource(v);}
+function addLocParam(){var wrap=document.getElementById('fLocParams'); if(!wrap)return;
+  var qs=[]; document.querySelectorAll('#bItems .canvas-card:not(.sectioncard) .qlabel').forEach(function(q){var t=(q.textContent||'').trim(); if(t)qs.push(t);});
+  var opts='<option>Select question</option>'+qs.map(function(t){return '<option>'+t.replace(/</g,'&lt;')+'</option>';}).join('');
+  var row=document.createElement('div'); row.className='card'; row.style.padding='12px';
+  row.innerHTML='<div class="input"><input class="ph" placeholder="Parameter name" style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:inherit"></div>'+
+    '<div class="flex ac g8" style="margin-top:8px"><div class="input" style="flex:1"><select style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:var(--text-strong)">'+opts+'</select></div><span class="iconpill" onclick="this.closest(\'.card\').remove()" style="flex:0 0 auto"><i data-lucide="trash-2"></i></span></div>';
+  wrap.appendChild(row); if(window.lucide)lucide.createIcons();
+}
 function addApiParam(wrapId){var wrap=document.getElementById(wrapId||'fApiParams'); if(!wrap)return;
   var row=document.createElement('div'); row.className='flex ac g8';
   row.innerHTML='<div class="input" style="flex:1"><input class="ph" placeholder="Parameter name" style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:inherit"></div><span class="iconpill" onclick="this.parentNode.remove()" style="flex:0 0 auto"><i data-lucide="trash-2"></i></span>';
