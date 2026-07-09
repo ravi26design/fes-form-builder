@@ -935,7 +935,30 @@ td .ds{font-size:12px;color:var(--text-muted);margin-top:2px}
           <div class="field"><label>Field Type</label><div class="input"><span id="fType">Short Text</span></div></div>
           <div class="field"><label>Placeholder</label><div class="input"><input id="fPh" oninput="fieldPhInput(this.value)" placeholder="Enter placeholder text"></div></div>
           <div class="field"><label>Help Text</label><div class="input tall"><textarea id="fHelp" oninput="fieldHelpInput(this.value)" placeholder="Add help text..." style="border:none;background:transparent;outline:none;width:100%;resize:none;font:inherit;color:inherit;min-height:60px"></textarea></div></div>
-          <div class="field" id="fSource" style="display:none"><label>Options Source</label><div class="input"><select style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:var(--text-strong)"><option>Manual</option><option>From API</option><option>From Location Hierarchy</option></select></div></div>
+          <div class="field" id="fSource" style="display:none"><label>Options Source</label><div class="input"><select id="fSourceSel" onchange="onSourceChange(this.value)" style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:var(--text-strong)"><option>Manual</option><option>From API</option><option>From Location Hierarchy</option></select></div></div>
+          <div id="fApiCfg" style="display:none;border-top:1px solid var(--border-subtle);padding-top:16px">
+            <div style="font-family:var(--font-bold);font-weight:700;font-size:15px;color:var(--text-heading);margin-bottom:14px">API Configuration</div>
+            <div class="field"><label>API URL</label><div class="input"><input class="ph" placeholder="https://api.example.com/options" style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:inherit"></div></div>
+            <div class="field" style="margin-top:14px"><label>Method</label><div class="input"><select style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:var(--text-strong)"><option>GET</option><option>POST</option><option>PUT</option></select></div></div>
+            <div class="field" style="margin-top:14px"><label>Parameters</label><div id="fApiParams" class="gridcols" style="gap:8px"></div><button class="btn btn-ghost btn-sm" onclick="addApiParam()" style="border-style:dashed;justify-content:center;width:100%;margin-top:4px"><i data-lucide="plus"></i> Add Parameter</button></div>
+            <div class="field" style="margin-top:14px"><label>Execution</label><div class="input"><select style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:var(--text-strong)"><option>Server</option><option>Client</option></select></div></div>
+          </div>
+          <div id="fLocCfg" style="display:none;border-top:1px solid var(--border-subtle);padding-top:16px">
+            <div style="font-family:var(--font-bold);font-weight:700;font-size:15px;color:var(--text-heading);margin-bottom:12px">Location Levels</div>
+            <div class="flex" style="flex-direction:column;gap:13px">
+              <label class="flex ac g8" onclick="toggleCk(this)" style="font-size:14px;cursor:pointer"><span class="ck"></span> State</label>
+              <label class="flex ac g8" onclick="toggleCk(this)" style="font-size:14px;cursor:pointer"><span class="ck"></span> District</label>
+              <label class="flex ac g8" onclick="toggleCk(this)" style="font-size:14px;cursor:pointer"><span class="ck"></span> Sub-district</label>
+              <label class="flex ac g8" onclick="toggleCk(this)" style="font-size:14px;cursor:pointer"><span class="ck"></span> Block</label>
+              <label class="flex ac g8" onclick="toggleCk(this)" style="font-size:14px;cursor:pointer"><span class="ck"></span> Panchayat</label>
+              <label class="flex ac g8" onclick="toggleCk(this)" style="font-size:14px;cursor:pointer"><span class="ck"></span> Village</label>
+            </div>
+            <div onclick="toggleAdvLoc(this)" style="border-top:1px solid var(--border-subtle);margin-top:15px;padding-top:15px;display:flex;justify-content:space-between;align-items:center;cursor:pointer"><span style="font-family:var(--font-bold);font-weight:700;font-size:15px;color:var(--text-heading)">Advanced Settings</span><i data-lucide="chevron-right"></i></div>
+            <div id="fLocAdv" style="display:none;margin-top:12px">
+              <label class="flex g8" onclick="toggleCk(this)" style="font-size:13px;cursor:pointer;align-items:flex-start"><span class="ck"></span><span><b style="font-family:var(--font-bold);font-weight:700">Cascading selection</b><div class="muted">Filter each level by the parent selection</div></span></label>
+              <label class="flex g8" onclick="toggleCk(this)" style="font-size:13px;cursor:pointer;align-items:flex-start;margin-top:12px"><span class="ck"></span><span><b style="font-family:var(--font-bold);font-weight:700">Prefill from user location</b><div class="muted">Auto-select based on the field user's assigned area</div></span></label>
+            </div>
+          </div>
           <div class="field" id="fOptions" style="display:none;border-top:1px solid var(--border-subtle);padding-top:14px">
             <label>Options</label>
             <div id="fOptList" class="gridcols" style="gap:8px"></div>
@@ -2106,6 +2129,21 @@ function initSignatures(){
 }
 function setRating(e,el){e.stopPropagation();var w=el.parentNode,n=+el.dataset.n,cur=+(w.dataset.val||0);var val=(n===cur)?n-1:n;w.dataset.val=val;w.querySelectorAll('.star-r').forEach(function(s){var f=+s.dataset.n<=val;s.textContent=f?'★':'☆';s.classList.toggle('on',f);});}
 function isDropdownCard(c){return /dropdown/i.test(c.dataset.ftype||'');}
+function applyOptionSource(v){
+  var api=(v==='From API'), loc=(v==='From Location Hierarchy'), manual=!api&&!loc;
+  var s=function(id,on){var e=document.getElementById(id);if(e)e.style.display=on?'':'none';};
+  s('fApiCfg',api); s('fLocCfg',loc);
+  var fo=document.getElementById('fOptions'); if(fo)fo.style.display=manual?'':'none';
+  if(manual){var c=selField(); if(c)renderOptions(c);}
+  if(window.lucide)lucide.createIcons();
+}
+function onSourceChange(v){var c=selField(); if(c)c.dataset.osource=v; applyOptionSource(v);}
+function addApiParam(){var wrap=document.getElementById('fApiParams'); if(!wrap)return;
+  var row=document.createElement('div'); row.className='flex ac g8';
+  row.innerHTML='<div class="input" style="flex:1"><input class="ph" placeholder="Key" style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:inherit"></div><div class="input" style="flex:1"><input class="ph" placeholder="Value" style="border:none;background:transparent;outline:none;width:100%;font:inherit;color:inherit"></div><span class="iconpill" onclick="this.parentNode.remove()" style="color:var(--status-error);flex:0 0 auto"><i data-lucide="trash-2"></i></span>';
+  wrap.appendChild(row); if(window.lucide)lucide.createIcons();
+}
+function toggleAdvLoc(el){var a=document.getElementById('fLocAdv'); if(!a)return; var willOpen=(!a.style.display||a.style.display==='none'); a.style.display=willOpen?'':'none'; var ic=el.querySelector('svg,i'); if(ic){ic.style.transition='transform .15s';ic.style.transform=willOpen?'rotate(90deg)':'';}}
 function optEdit(i,v){var c=selField();if(!c)return;var a=getOpts(c);a[i]=v;c.dataset.opts=a.join('|');if(isDropdownCard(c))renderFieldPreview(c);else{var l=c.querySelector('.optblock[data-oi="'+i+'"] .optlabel');if(l)l.textContent=v;}}
 function optDel(i){var c=selField();if(!c)return;var a=getOpts(c);a.splice(i,1);c.dataset.opts=a.join('|');if(isDropdownCard(c))renderFieldPreview(c);else{var b=c.querySelector('.optblock[data-oi="'+i+'"]');if(b)b.remove();c.querySelectorAll('.optblock').forEach(function(x,idx){x.dataset.oi=idx;});}renderOptions(c);updateSupBadge(c);}
 function addOption(){var c=selField();if(!c)return;var a=getOpts(c);a.push('Option '+(a.length+1));c.dataset.opts=a.join('|');if(isDropdownCard(c))renderFieldPreview(c);else{var set=c.querySelector('.optset');if(set){set.insertAdjacentHTML('beforeend',optblockHTML(c.dataset.ftype,a[a.length-1],a.length-1));if(window.lucide)lucide.createIcons();}}renderOptions(c);}
@@ -2124,6 +2162,8 @@ function populateFieldProps(card){
   var ft2=(card.dataset.ftype||'').toLowerCase();
   var setShow=function(id,on){var e=document.getElementById(id);if(e)e.style.display=on?'':'none';};
   setShow('fPhoto',ft2==='photo upload'); setShow('fFile',ft2==='file upload'); setShow('fMap',ft2==='map data');
+  if(isDrop){var sel=document.getElementById('fSourceSel');var sv=card.dataset.osource||'Manual';if(sel)sel.value=sv;applyOptionSource(sv);}
+  else{setShow('fApiCfg',false);setShow('fLocCfg',false);}
   // follow-up breadcrumb
   var when=card.dataset.when, grp=document.getElementById('fEditGrp'), nm=document.getElementById('fName'), inl=document.getElementById('fIn'), wb=document.getElementById('fWhen');
   if(when){
