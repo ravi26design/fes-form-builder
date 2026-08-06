@@ -1691,6 +1691,8 @@ function pageSkeleton(id,ms){
   page._skT=setTimeout(function(){page.classList.remove('gload');if(window.lucide)lucide.createIcons();},ms||800);
 }
 function go(id){
+  /* field users have no access to Programs or Templates */
+  if((id==='programs'||id==='templates')&&isFieldUser())id='dashboard';
   document.querySelectorAll('.screen').forEach(function(s){s.classList.remove('show');});
   var el=document.getElementById(id); if(el)el.classList.add('show');
   window.scrollTo(0,0);
@@ -1709,6 +1711,8 @@ function applyRole(){var role='';try{role=localStorage.getItem('fes_role')||'';}
   var fOrg=document.getElementById('flOrgField'); if(fOrg)fOrg.style.display=showOrg?'':'none';
   /* field users don't get create/edit/delete CTAs in the forms list or dashboard */
   var fu=(role==='Field User');
+  /* field users don't get Programs or Templates modules */
+  document.querySelectorAll('.nav a').forEach(function(a){var oc=a.getAttribute('onclick')||'';if(/'(programs|templates)'/.test(oc))a.style.display=fu?'none':'';});
   var cb=document.getElementById('flCreateBtn'); if(cb)cb.style.display=fu?'none':'';
   var ab=document.getElementById('addFormBtn'); if(ab)ab.style.display=fu?'none':'';
   /* status filter reads All | Submitted | Pending for field users */
